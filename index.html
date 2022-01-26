@@ -13,35 +13,38 @@
     
    <link rel="stylesheet" href="./css/signin.css">
 
+   <style>  
+    body  
+    {  
+      background-image: url("images/millican.jpg");
+    }
+    </style>
+
+
   </head>
+  
     <body class="text-center center-screen">
   
       <div class="container">
-        <img src="css\img\goldpageslogo.png" alt="goldpageslogo" class="mt-3 mb-5" height="100">
+        <img src="images/goldpageslogo.png" alt="goldpageslogo" class="mt-3 mb-5" height="100">
         <form class="form" id="login" style="max-width: 350px; margin:auto;">
          
           <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">Sign In</h1>
             
           <div class="form__message form__message--error"></div>
           <div class="form-floating form-white mb-4 form__input-group">
-            <input type="text" id="floatingInput login userName" class="form-control form-control-lg form__input" placeholder="Username">
+            <input type="text" id="floatingInput loginName userName" class="form-control form-control-lg form__input" placeholder="Username">
             <label class="form-label" for="floatingInput">Username</label>
             <div class="form__input-error-message"></div>
           </div>
 
           <div class="form-floating form-white mb-4 form__input-group">
-            <input type="password"  id="floatingPassword password" class="form-control form__input" placeholder="Password">
+            <input type="password"  id="floatingPassword loginPassword" class="form-control form__input" placeholder="Password">
             <label class="form-label" for="floatingPassword">Password</label>
             <div class="form__input-error-message"></div>
           </div>
-      
-          <div class="checkbox mb-3 form__input-group">
-            <label class='form-label'>
-              <input type="checkbox" value="remember-me"> Remember me
-            </label>
-          </div>
 
-          <button class="w-100 mb-5 btn btn-lg btn-primary form__button" type="submit" onclick="login()">Sign in</button>
+          <button class="w-100 mb-5 mt-3 btn btn-lg btn-primary form__button" type="submit" onclick="login()">Sign in</button>
           <p class="form--text">
             <a class="form__link" id="createAccountLink">Don't Have an Account? Sign up</a>
           </p>
@@ -67,19 +70,13 @@
           </div>
 
             <div class="form-floating form-white mb-4 form__input-group">
-              <input type="email" id="email" class="form-control form-control-lg form__input" placeholder="name@example.com">
-              <label class="form-label" for="email">Email</label>
-              <div class="form__input-error-message"></div>
-            </div>
-
-            <div class="form-floating form-white mb-4 form__input-group">
-              <input type="text" id="login userName signupUsername" class="form-control form-control-lg form__input" placeholder="Create a Username">
+              <input type="text" id="login regName userName" class="form-control form-control-lg form__input" placeholder="Create a Username">
               <label class="form-label" for="login">Username</label>
               <div class="form__input-error-message"></div>
             </div>
   
             <div class="form-floating form-white mb-4 form__input-group">
-              <input type="password"  id="password" class="form-control form__input" placeholder="Password">
+              <input type="password"  id="password regPassword" class="form-control form__input" placeholder="Password">
               <label class="form-label" for="password">Password</label>
               <div class="form__input-error-message"></div>
             </div>
@@ -104,4 +101,4 @@
     <script src="./js/app.js"></script>
 
   </body>
-</html>
+</html>  

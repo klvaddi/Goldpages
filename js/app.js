@@ -1,21 +1,20 @@
-const urlBase = '';
+const urlBase = 'http://www.goldpagescop.com';
 
-let userId = 0;
+let id = 0;
 let firstName = "";
 let lastName = "";
 
 function login() 
 {
-    userId = 0;
+    id = 0;
 	firstName = "";
 	lastName = "";
 
-    const login = document.getElementById("login").value;
-    const password = document.getElementById("password").value;
-    const hash = md5(password);
+    const userName = document.getElementById("loginName").value;
+    const password = document.getElementById("loginPassword").value;
 
     document.getElementById("loginResult").innerHTML = "";
-    const tmp = {login:login,password:hash};
+    const tmp = {userName:userName,password:password};
 	const jsonPayload = JSON.stringify(tmp);
     
     const url = urlBase + '/Login.php';
@@ -30,9 +29,9 @@ function login()
 			if (this.readyState == 4 && this.status == 200) 
 			{
 				let jsonObject = JSON.parse( xhr.responseText );
-				userId = jsonObject.id;
+				id = jsonObject.id;
 		
-				if( userId < 1 )
+				if( id < 1 )
 				{		
 					document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
 					return;
@@ -57,20 +56,17 @@ function login()
 
 function register() 
 {
-    const fName = document.getElementById("firstName").value;
-    const lName = document.getElementById("lastName").value;
-	const email = document.getElementById("email").value;
-	const userName = document.getElementById("userName").value;
-	const password = document.getElementById("password").value;
+	id = 0;
+
+    const firstName = document.getElementById("firstName").value;
+    const lastName = document.getElementById("lastName").value;
+	const userName = document.getElementById("regName").value;
+	const password = document.getElementById("regPassword").value;
 	const confirmPassword = document.getElementById("conPassword").value;
-	
-
-	const hash = md5(password);
     
-
     document.getElementById("registerResult").innerHTML = "";
     
-	const tmp = {firstName:fName, lastName:lName, email:email, userName:userName, password:hash};
+	const tmp = {firstName:firstName, lastName:lastName, userName:userName, password:password};
 	const jsonPayload = JSON.stringify(tmp);
     
     const url = urlBase + '/Register.php';
@@ -85,7 +81,7 @@ function register()
 			if (this.readyState == 4 && this.status == 200) 
 			{
 				let jsonObject = JSON.parse( xhr.responseText );
-				userId = jsonObject.id;
+				id = jsonObject.id;
 		
 				if( password != confirmPassword )
 				{		
@@ -95,7 +91,6 @@ function register()
 		
 				firstName = jsonObject.firstName;
 				lastName = jsonObject.lastName;
-				email = jsonObject.email;
 				userName = jsonObject.userName;
 				password = jsonObject.password;
 
@@ -119,12 +114,12 @@ function saveCookie()
 	let minutes = 20;
 	let date = new Date();
 	date.setTime(date.getTime()+(minutes*60*1000));	
-	document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",userId=" + userId + ";expires=" + date.toGMTString();
+	document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",userId=" + id + ";expires=" + date.toGMTString();
 }
 
 function readCookie()
 {
-	userId = -1;
+	id = -1;
 	let data = document.cookie;
 	let splits = data.split(",");
 	for(var i = 0; i < splits.length; i++) 
@@ -141,11 +136,11 @@ function readCookie()
 		}
 		else if( tokens[0] == "userId" )
 		{
-			userId = parseInt( tokens[1].trim() );
+			id = parseInt( tokens[1].trim() );
 		}
 	}
 	
-	if( userId < 0 )
+	if( id < 0 )
 	{
 		window.location.href = "index.html";
 	}
