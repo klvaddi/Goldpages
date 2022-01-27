@@ -44,7 +44,7 @@
             <div class="form__input-error-message"></div>
           </div>
 
-          <button class="w-100 mb-5 mt-3 btn btn-lg btn-primary form__button" type="submit" onclick="login()">Sign in</button>
+          <button class="w-100 mb-5 mt-3 btn btn-lg btn-primary form__button" type="submit" onsubmit="login();">Sign in</button>
           <p class="form--text">
             <a class="form__link" id="createAccountLink">Don't Have an Account? Sign up</a>
           </p>
@@ -81,14 +81,7 @@
               <div class="form__input-error-message"></div>
             </div>
 
-            <div class="form-floating form-white mb-4 form__input-group">
-              <input type="password"  id="conPassword" class="form-control form__input" placeholder=" Confirm Password">
-              <label class="form-label" for="conPassword"> Confirm Password</label>
-              <div class="form__input-error-message"></div>
-            </div>
-
-
-            <button type="submit" class="btn btn-primary btn-lg mb-4 form__button" onclick="register()">Register</button>
+            <button type="submit" class="btn btn-primary btn-lg mb-4 form__button" onsubmit="register();">Register</button>
             <p class="form__text">
               <a class="form__link" href="./" id="loginLink">Already have an account? Sign in</a>
           </p>

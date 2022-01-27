@@ -1,4 +1,5 @@
 const urlBase = 'http://www.goldpagescop.com';
+const extension = 'php';
 
 let id = 0;
 let firstName = "";
@@ -10,15 +11,15 @@ function login()
 	firstName = "";
 	lastName = "";
 
-    const userName = document.getElementById("loginName").value;
-    const password = document.getElementById("loginPassword").value;
+    let login = document.getElementById("loginName").value;
+    let password = document.getElementById("loginPassword").value;
 
     document.getElementById("loginResult").innerHTML = "";
-    const tmp = {userName:userName,password:password};
-	const jsonPayload = JSON.stringify(tmp);
+    let tmp = {login:login,password:password};
+	let jsonPayload = JSON.stringify(tmp);
     
-    const url = urlBase + '/Login.php';
-	const xhr = new XMLHttpRequest();
+    let url = urlBase + '/Login.' + extension;
+	let xhr = new XMLHttpRequest();
 
     xhr.open("POST", url, true);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
@@ -56,21 +57,18 @@ function login()
 
 function register() 
 {
-	id = 0;
-
-    const firstName = document.getElementById("firstName").value;
-    const lastName = document.getElementById("lastName").value;
-	const userName = document.getElementById("regName").value;
-	const password = document.getElementById("regPassword").value;
-	const confirmPassword = document.getElementById("conPassword").value;
+    let firstName = document.getElementById("firstName").value;
+    let lastName = document.getElementById("lastName").value;
+	let userName = document.getElementById("regName").value;
+	let password = document.getElementById("regPassword").value;
     
     document.getElementById("registerResult").innerHTML = "";
     
-	const tmp = {firstName:firstName, lastName:lastName, userName:userName, password:password};
-	const jsonPayload = JSON.stringify(tmp);
+	let tmp = {firstName:firstName, lastName:lastName, userName:userName, password:password};
+	let jsonPayload = JSON.stringify(tmp);
     
-    const url = urlBase + '/Register.php';
-	const xhr = new XMLHttpRequest();
+    let url = urlBase + '/Register.' + extension;
+	let xhr = new XMLHttpRequest();
 
     xhr.open("POST", url, true);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
@@ -82,13 +80,7 @@ function register()
 			{
 				let jsonObject = JSON.parse( xhr.responseText );
 				id = jsonObject.id;
-		
-				if( password != confirmPassword )
-				{		
-					document.getElementById("registerResult").innerHTML = "Passwords did not match!";
-					return;
-				}
-		
+	
 				firstName = jsonObject.firstName;
 				lastName = jsonObject.lastName;
 				userName = jsonObject.userName;
