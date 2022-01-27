@@ -1,13 +1,13 @@
-const urlBase = 'http://www.goldpagescop.com';
+const urlBase = 'http://www.goldpagescop.com/LAMPAPI';
 const extension = 'php';
 
-let id = 0;
+let userId = 0;
 let firstName = "";
 let lastName = "";
 
 function login() 
 {
-    id = 0;
+    userId = 0;
 	firstName = "";
 	lastName = "";
 
@@ -15,13 +15,13 @@ function login()
     let password = document.getElementById("loginPassword").value;
 
     document.getElementById("loginResult").innerHTML = "";
-    let tmp = {login:login,password:password};
-	let jsonPayload = JSON.stringify(tmp);
+
+    var jsonPayload = '{"login" : "' + login + '", "password" : "' + password + '"}';
     
     let url = urlBase + '/Login.' + extension;
 	let xhr = new XMLHttpRequest();
 
-    xhr.open("POST", url, true);
+    xhr.open("POST", url, false);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 	try
 	{
@@ -30,9 +30,9 @@ function login()
 			if (this.readyState == 4 && this.status == 200) 
 			{
 				let jsonObject = JSON.parse( xhr.responseText );
-				id = jsonObject.id;
+				userId = jsonObject.userId;
 		
-				if( id < 1 )
+				if( userId < 1 )
 				{		
 					document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
 					return;
@@ -43,7 +43,7 @@ function login()
 
 				saveCookie();
 	
-				window.location.href = "./index.html";
+				window.location.href = "contacts.html";
 			}
 		};
 		xhr.send(jsonPayload);
@@ -57,20 +57,47 @@ function login()
 
 function register() 
 {
-    let firstName = document.getElementById("firstName").value;
-    let lastName = document.getElementById("lastName").value;
+	userId = 0;
+	firstName = "";
+	lastName = "";
+
+    firstName = document.getElementById("firstName").value;
+    lastName = document.getElementById("lastName").value;
+	
 	let userName = document.getElementById("regName").value;
 	let password = document.getElementById("regPassword").value;
+	let confirmPassword = document.getElementById("conPassword").value;
     
     document.getElementById("registerResult").innerHTML = "";
-    
-	let tmp = {firstName:firstName, lastName:lastName, userName:userName, password:password};
-	let jsonPayload = JSON.stringify(tmp);
+
+	if (password !== confirmPassword)
+		{
+			document.getElementById("signupResult").innerHTML = "Passwords do not match";
+			return;
+		}
+
+	if (password === "" || password === null)
+		{
+			document.getElementById("signupResult").innerHTML = "Invalid password";
+			return;
+		}
+
+	if (userName === "" || userName === null)
+		{
+			document.getElementById("signupResult").innerHTML = "Invalid username";
+			return;
+		}
+
+	var jsonPayload = '{ "firstName" : "' + firstName
+					+ '", "lastName" : "' + lastName
+					+ '", "userName" : "'    + userName
+					+ '", "password" : "' + password + '" }';
+
     
     let url = urlBase + '/Register.' + extension;
 	let xhr = new XMLHttpRequest();
 
-    xhr.open("POST", url, true);
+    xhr.open("POST", url, false);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 	try
 	{
@@ -79,16 +106,14 @@ function register()
 			if (this.readyState == 4 && this.status == 200) 
 			{
 				let jsonObject = JSON.parse( xhr.responseText );
-				id = jsonObject.id;
+				userId = jsonObject.userId;
 	
 				firstName = jsonObject.firstName;
 				lastName = jsonObject.lastName;
-				userName = jsonObject.userName;
-				password = jsonObject.password;
 
 				saveCookie();
 	
-				window.location.href = "./index.html";
+				window.location.href = "contacts.html";
 			}
 		};
 		xhr.send(jsonPayload);
@@ -106,12 +131,12 @@ function saveCookie()
 	let minutes = 20;
 	let date = new Date();
 	date.setTime(date.getTime()+(minutes*60*1000));	
-	document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",userId=" + id + ";expires=" + date.toGMTString();
+	document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",userId=" + userId + ";expires=" + date.toGMTString();
 }
 
 function readCookie()
 {
-	id = -1;
+	userId = -1;
 	let data = document.cookie;
 	let splits = data.split(",");
 	for(var i = 0; i < splits.length; i++) 
@@ -128,7 +153,7 @@ function readCookie()
 		}
 		else if( tokens[0] == "userId" )
 		{
-			id = parseInt( tokens[1].trim() );
+			userId = parseInt( tokens[1].trim() );
 		}
 	}
 	
