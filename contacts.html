@@ -1,0 +1,50 @@
+<html>
+<head>
+  
+    <div class="topnav">
+        <a class="active" href="./index.html" id="home">Home</a>
+    </div>
+
+
+    <title>Contact Manager</title>
+    <script type="text/javascript" src="js/app.js"></script>
+   
+
+</head>
+<body>
+
+<h1 id="title">Contact Manager</h1>
+
+
+<div id="wrapper">
+
+	<div id="loggedInDiv" style="display:block">
+		<span id="userName"></span><br />
+	</div>
+
+	<div id="searchContactsDiv" style="display:block">
+		<br />
+			<div id="searchPanelDiv" style="display:block">
+				<input type="text" id="searchText" placeholder="Contacts To Search For"/>
+				<button type="button" id="searchContactsButton" class="buttons"> Search </button>
+			</div>
+
+			<div id="contactsListDiv">
+				<span id="ContactsSearchResult"></span>
+				<div id="ContactsList">
+
+				</div>
+
+			</div>
+
+		<br /><br />
+	</div>
+
+	<div id="footerDiv" style="display:block">
+		<button type="button" id="logoutButton" class="buttons" style="display:block" onclick="doLogout();"> Log Out </button>
+		<button type="button" id="goToAddContactsButton" class="buttons" style="display:block"> Add </button><br />
+	</div>
+
+    </div>
+</body>
+</html>

@@ -15,7 +15,7 @@
 		$stmt = $conn->prepare("DELETE FROM Contacts WHERE FirstName=?");
 		$stmt->bind_param("s", $contact);
 		$stmt->execute();
-		//echo "User was deleted: " . $contact;
+		echo "User was deleted: " . $contact . "\n";
 		$stmt->close();
 		$conn->close();
 		returnWithError("");
@@ -38,3 +38,5 @@
 		sendResultInfoAsJson( $retValue );
 	}
 ?>
+
+

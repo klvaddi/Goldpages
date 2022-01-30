@@ -1,25 +1,31 @@
-const urlBase = 'http://www.goldpagescop.com';
+const urlBase = 'http://goldpagescop.com';
 const extension = 'php';
 
-let id = 0;
+let userId = 0;
 let firstName = "";
 let lastName = "";
+let error = "";
 
 function login() 
 {
-    id = 0;
+    userId = 0;
 	firstName = "";
 	lastName = "";
+	error = "";
 
-    let login = document.getElementById("loginName").value;
-    let password = document.getElementById("loginPassword").value;
+    const login = document.getElementById("loginName").value;
+    const password = document.getElementById("loginPassword").value;
 
     document.getElementById("loginResult").innerHTML = "";
-    let tmp = {login:login,password:password};
-	let jsonPayload = JSON.stringify(tmp);
+
+	const obj = new Object();
+	obj.login = login;
+	obj.password = password;
+
+    const jsonPayload = JSON.stringify( obj );
     
-    let url = urlBase + '/Login.' + extension;
-	let xhr = new XMLHttpRequest();
+    const url = urlBase + '/LAMPAPI/Login.' + extension;
+	const xhr = new XMLHttpRequest();
 
     xhr.open("POST", url, true);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
@@ -27,27 +33,29 @@ function login()
 	{
 		xhr.onreadystatechange = function() 
 		{
-			if (this.readyState == 4 && this.status == 200) 
+			if (this.readyState == 4 && this.status == 200)
 			{
-				let jsonObject = JSON.parse( xhr.responseText );
-				id = jsonObject.id;
-		
-				if( id < 1 )
-				{		
-					document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
-					return;
-				}
-		
-				firstName = jsonObject.firstName;
-				lastName = jsonObject.lastName;
-
-				saveCookie();
-	
-				window.location.href = "./index.html";
+				const jsonObject = JSON.parse(xhr.responseText);
+				userId = jsonObject.id;
+				error = jsonObject.error;
+				
+			if( error !== "" )
+			{
+				document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
+				return;
 			}
-		};
-		xhr.send(jsonPayload);
-	}
+		
+			firstName = jsonObject.firstName;
+			lastName = jsonObject.lastName;
+
+			saveCookie();
+	
+			window.location.href = "contacts.html";
+		}
+
+	};
+	xhr.send(jsonPayload);
+}
 	catch(err)
 	{
 		document.getElementById("loginResult").innerHTML = err.message;
@@ -57,41 +65,77 @@ function login()
 
 function register() 
 {
-    let firstName = document.getElementById("firstName").value;
-    let lastName = document.getElementById("lastName").value;
-	let userName = document.getElementById("regName").value;
-	let password = document.getElementById("regPassword").value;
+	userId = 0;
+	firstName = "";
+	lastName = "";
+	error = "";
+
+    const first = document.getElementById("firstName").value;
+    const last = document.getElementById("lastName").value;
+	
+	const userName = document.getElementById("signupUsername").value;
+	const password = document.getElementById("regPassword").value;
+	const confirmPassword = document.getElementById("conPassword").value;
     
     document.getElementById("registerResult").innerHTML = "";
-    
-	let tmp = {firstName:firstName, lastName:lastName, userName:userName, password:password};
-	let jsonPayload = JSON.stringify(tmp);
-    
-    let url = urlBase + '/Register.' + extension;
-	let xhr = new XMLHttpRequest();
+
+	if (password !== confirmPassword)
+		{
+			document.getElementById("registerResult").innerHTML = "Passwords do not match";
+			return;
+		}
+
+	if (password === "" || password === null)
+		{
+			document.getElementById("registerResult").innerHTML = "Invalid password";
+			return;
+		}
+
+	if (userName === "" || userName === null)
+		{
+			document.getElementById("registerResult").innerHTML = "Invalid username";
+			return;
+		}
+	
+	const obj = new Object();
+	obj.firstName = first;
+	obj.lastName = last;
+	obj.userName = userName;
+	obj.password = password;
+
+    const jsonPayload = JSON.stringify( obj );
+	
+    const url = urlBase + '/LAMPAPI/Register.' + extension;
+	const xhr = new XMLHttpRequest();
 
     xhr.open("POST", url, true);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 	try
 	{
-		xhr.onreadystatechange = function() 
+		xhr.onreadystatechange = function ()
 		{
-			if (this.readyState == 4 && this.status == 200) 
+			if (this.readyState == 4 && this.status == 200)
 			{
-				let jsonObject = JSON.parse( xhr.responseText );
-				id = jsonObject.id;
-	
-				firstName = jsonObject.firstName;
-				lastName = jsonObject.lastName;
-				userName = jsonObject.userName;
-				password = jsonObject.password;
+				const jsonResponse = JSON.parse(xhr.responseText);
+				error = jsonResponse.error;
+				document.getElementById("registerResult").innerHTML = "Signed in.";
 
+			if( error !== "" )
+			{
+				document.getElementById("registerResult").innerHTML = "Sign Up Failed";
+				return;
+			}
+
+				userId = jsonResponse.id;
+				firstName = first;
+				lastName = last; 
+	
 				saveCookie();
 	
-				window.location.href = "./index.html";
+				window.location.href = "contacts.html";
 			}
 		};
-		xhr.send(jsonPayload);
+		xhr.send(jsonPayload);	
 	}
 	catch(err)
 	{
@@ -103,21 +147,24 @@ function register()
 
 function saveCookie()
 {
-	let minutes = 20;
-	let date = new Date();
+	var minutes = 20;
+	var date = new Date();
 	date.setTime(date.getTime()+(minutes*60*1000));	
-	document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",userId=" + id + ";expires=" + date.toGMTString();
+	document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",userId=" + userId + ";expires=" + date.toGMTString();
 }
 
 function readCookie()
 {
-	id = -1;
-	let data = document.cookie;
-	let splits = data.split(",");
+	firstName = "";
+	lastName = "";
+
+	userId = -1;
+	var data = document.cookie;
+	var splits = data.split(";");
 	for(var i = 0; i < splits.length; i++) 
 	{
-		let thisOne = splits[i].trim();
-		let tokens = thisOne.split("=");
+		var thisOne = splits[i].trim();
+		var tokens = thisOne.split("=");
 		if( tokens[0] == "firstName" )
 		{
 			firstName = tokens[1];
@@ -128,7 +175,7 @@ function readCookie()
 		}
 		else if( tokens[0] == "userId" )
 		{
-			id = parseInt( tokens[1].trim() );
+			userId = parseInt( tokens[1].trim() );
 		}
 	}
 	
@@ -141,60 +188,3 @@ function readCookie()
 		document.getElementById("userName").innerHTML = "Logged in as " + firstName + " " + lastName;
 	}
 }
-
-
-function setFormMessage(formElement, type, message) 
-{
-    const messageElement = formElement.querySelector(".form__message");
-
-    messageElement.textContent = message;
-    messageElement.classList.remove("form__message--success", "form__message--error");
-    messageElement.classList.add(`form__message--${type}`);
-}
-
-function setInputError(inputElement, message) 
-{
-    inputElement.classList.add("form__input--error");
-    inputElement.parentElement.querySelector(".form__input-error-message").textContent = message;
-}
-
-function clearInputError(inputElement) 
-{
-    inputElement.classList.remove("form__input--error");
-    inputElement.parentElement.querySelector(".form__input-error-message").textContent = "";
-}
-
-document.addEventListener("DOMContentLoaded", () => 
-{
-    const loginForm = document.querySelector("#login");
-    const createAccountForm = document.querySelector("#createAccount");
-
-    document.querySelector("#createAccountLink").addEventListener("click", e => 
-	{
-        e.preventDefault();
-        loginForm.classList.add("form--hidden");
-        createAccountForm.classList.remove("form--hidden");
-    });
-
-    document.querySelector("#loginLink").addEventListener("click", e => 
-	{
-        e.preventDefault();
-        loginForm.classList.remove("form--hidden");
-        createAccountForm.classList.add("form--hidden");
-    });
-
-    document.querySelectorAll(".form__input").forEach(inputElement => 
-		{
-        inputElement.addEventListener("blur", e => {
-            if (e.target.id === "signupUsername" && e.target.value.length > 0 && e.target.value.length < 10) 
-			{
-                setInputError(inputElement, "Username must be at least 10 characters in length");
-            }
-        });
-
-        inputElement.addEventListener("input", e => 
-		{
-            clearInputError(inputElement);
-        });
-    });
-});
