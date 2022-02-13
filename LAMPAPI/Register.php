@@ -4,7 +4,7 @@
 $inData = getRequestInfo();
 $firstName = $inData["firstName"];
 $lastName = $inData["lastName"];
-$login = $inData["userName"];
+$login = $inData["login"];
 $password = $inData["password"];
 
 
@@ -28,7 +28,6 @@ if($conn->connect_error){
     } else{
         //Insert Users
         $stmt = $conn->prepare("INSERT into Users (FirstName, LastName, Login, Password) VALUES (?, ?, ?, ?)");
-        $password = md5($password);
         $stmt->bind_param('ssss', $firstName, $lastName, $login, $password);
         $stmt->execute();
 

@@ -1,7 +1,7 @@
 body {
-  --color-primary: #ffdd03;
-  --color-primary-dark: #fbc403;
-  --color-secondary: #0a0a0a;
+  --color-primary: #3083dc;
+  --color-primary-dark: #4e4187;
+  --color-secondary: #ffffff;
   --color-error: #cc3333;
   --color-success: #4bb544;
   --border-radius: 4px;
@@ -108,7 +108,7 @@ body {
   padding: 1rem 2rem;
   font-weight: bold;
   font-size: 1.1rem;
-  color: #000000;
+  color: #ffffff;
   border: none;
   border-radius: var(--border-radius);
   outline: none;
@@ -129,7 +129,6 @@ body {
 }
 
 .form__link {
-  color: var(--color-secondary);
   text-decoration: none;
   cursor: pointer;
 }
